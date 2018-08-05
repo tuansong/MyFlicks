@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { ScrollView, FlatList, View } from 'react-native';
+import { ScrollView, FlatList, View, StyleSheet } from 'react-native';
 import MovieDetail from './MovieDetail';
 import { SearchBar, Button } from 'react-native-elements';
 
 class MovieList extends Component {
     render() {
         const props = this.props.screenProps;
+        console.log(props.data[0]);
         return (
             <View>
                 <SearchBar
@@ -14,12 +15,17 @@ class MovieList extends Component {
                     onChangeText={props.onChange}
                 />
                 <View>
-                <Button
-                    title='Top rate'
-                    onPress={props.topRate} 
-                />
+                    <Button
+                        title='Top rate'
+                        onPress={props.topRate}
+                    />
+                    <Button
+                        title='Release date'
+                        onPress={props.topView}
+                    />
                 </View>
                 <FlatList
+                    style = {styles.list}
                     data={props.data}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) =>

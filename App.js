@@ -28,10 +28,10 @@ export default class App extends React.Component {
       loading: false,
       movies: []
     }
-    this.loadMore = this.loadMore.bind(this);
-    this.mostViewFilterHandler = this.mostViewFilterHandler.bind(this);
-    this.topRateFilterHandler = this.topRateFilterHandler.bind(this);
-    this.searchHandler = this.searchHandler.bind(this);
+   this.loadMore = this.loadMore.bind(this);
+   this.mostViewFilterHandler = this.mostViewFilterHandler.bind(this);
+   this.topRateFilterHandler = this.topRateFilterHandler.bind(this);
+   this.searchHandler = this.searchHandler.bind(this);
   }
 
   componentDidMount() {
@@ -63,7 +63,6 @@ export default class App extends React.Component {
   searchHandler(text) {
     let movie = this.state.cloneMovies;
     let results = movie.filter(m => m.title.includes(text));
-    //console.log(results);
     this.setState({
       movies: results
     })
@@ -71,36 +70,38 @@ export default class App extends React.Component {
 
   loadMore() {
     this.getMovies();
+    console.log('loadMore()');
   }
 
   topRateFilterHandler() {
     console.log("topRateFilterHandler");
     this.setState({
-      loading: true,
+      loading: true
     });
     let movies = this.state.cloneMovies;
-    let sortedMovies = this.state.movies.sort((a, b)=> b.vote_average - a.vote_average);
+    let sortedMovies = movies.sort(this.sortRating);
     this.setState({
       movies: sortedMovies,
       loading: false,
-    }, ()=>{
-      console.log('setState');
     });
-    // console.log(sortedMovies);
+    //console.log(sortedMovies);
   }
 
   sortRating(a, b) {
-    return b.vote_average - a.vote_average;
+    return a.vote_average - b.vote_average;
   }
 
   mostViewFilterHandler() {
+    console.log("mostViewFilterHandler()");
+    this.setState({
+      loading: true
+    });
     let movies = this.state.cloneMovies;
     let sortedMovies = movies.sort(this.sortDate);
     this.setState({
       movies: sortedMovies,
-      cloneMovies: sortedMovies
+      loading: false,
     });
-    console.log(sortedMovies);
   }
 
   sortDate(a, b) {
@@ -113,12 +114,7 @@ export default class App extends React.Component {
     return 0;
   }
 
-  test() {
-    console.log('hello');
-  }
-
   render() {
-    console.log("render");
     return (
       <Routes
         screenProps={{
@@ -127,7 +123,7 @@ export default class App extends React.Component {
           loading: this.state.loading,
           onChange: this.searchHandler,
           topRate: this.topRateFilterHandler,
-          // topView: this.mostViewFilterHandler
+          topView: this.mostViewFilterHandler
         }} />
     );
   }
@@ -139,8 +135,6 @@ const win = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //alignItems: 'center',
-    //paddingTop: 40,
     backgroundColor: '#fff',
     justifyContent: 'center',
   },
